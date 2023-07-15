@@ -1,28 +1,28 @@
 package tri.le.migrate.repository
 
-import java.time.LocalDateTime
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
 import org.springframework.data.repository.CrudRepository
-import javax.persistence.Column
+import java.time.LocalDateTime
+import java.util.stream.Stream
+import javax.persistence.*
+
 
 interface ContactRepo : CrudRepository<Contact, Long> {
+
+  fun findAllBy(): Stream<Contact>
 }
 
 
 @Entity
 class Contact(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  val id: Long? = null,
 
-    val name: String,
+  val name: String,
 
-    @Column(name = "profile_id")
-    val profileId: String,
+  @Column(name = "profile_id")
+  val profileId: String,
 
-    val createdDate: LocalDateTime = LocalDateTime.now(),
-    val modifiedDate: LocalDateTime = LocalDateTime.now()
+  val createdDate: LocalDateTime = LocalDateTime.now(),
+  val modifiedDate: LocalDateTime = LocalDateTime.now()
 )

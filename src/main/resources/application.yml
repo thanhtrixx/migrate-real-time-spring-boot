@@ -1,14 +1,26 @@
 spring:
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
     properties:
       hibernate:
-        jdbc.batch_size: 20
+        jdbc.batch_size: 1000
         jdbc.fetch_size: 1000
   datasource:
     url: jdbc:mysql://localhost:3306/migrate-table
     username: root
     password: root
     driverClassName: com.mysql.cj.jdbc.Driver
+
+    hikari:
+      connectionTimeout: 30000
+      maxLifetime: 240000
+      maximumPoolSize: 50
+      minimumIdle: 5
+      idleTimeout: 230000
+      data-source-properties:
+        prep-stmt-cache-size: 250
+        prep-stmt-cache-sql-limit: 2048
+        cache-prep-stmts: true
+        use-server-prep-stmts: true

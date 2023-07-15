@@ -4,6 +4,6 @@ import java.time.LocalDateTime
 
 interface Auditing {
 
-    val createdDate: LocalDateTime
-    val modifiedDate: LocalDateTime
+  val createdDate: LocalDateTime
+  val modifiedDate: LocalDateTime
 }
