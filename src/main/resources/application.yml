@@ -1,0 +1,14 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        jdbc.batch_size: 20
+        jdbc.fetch_size: 1000
+  datasource:
+    url: jdbc:mysql://localhost:3306/migrate-table
+    username: root
+    password: root
+    driverClassName: com.mysql.cj.jdbc.Driver
