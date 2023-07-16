@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-  id 'org.springframework.boot' version '2.7.13'
+  id 'org.springframework.boot' version "$springBootVersion"
   id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-  id 'org.jetbrains.kotlin.jvm' version '1.8.0'
-  id 'org.jetbrains.kotlin.plugin.spring' version '1.8.0'
-  id 'org.jetbrains.kotlin.plugin.jpa' version '1.8.0'
+  id 'org.jetbrains.kotlin.jvm' version "$kotlinVersion"
+  id 'org.jetbrains.kotlin.plugin.spring' version "$kotlinVersion"
+  id 'org.jetbrains.kotlin.plugin.jpa' version "$kotlinVersion"
 }
 
 group = 'tri.le'
