@@ -1,6 +1,7 @@
 package tri.le.migrate.repository
 
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.jdbc.core.PreparedStatementSetter
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
@@ -15,8 +16,11 @@ class ContactJdbcRepo(
   private val mapper = ContactRowMapper()
 
   @Transactional(readOnly = true)
-  fun findAllByStream(): Stream<Contact> {
-    return jdbcTemplate.queryForStream("SELECT * from contact", mapper)
+  fun findAllByStream(maxId: Int): Stream<Contact> {
+    return jdbcTemplate.queryForStream(
+      "SELECT * FROM contact WHERE id <= ?",
+      PreparedStatementSetter { it.setInt(1, maxId) }, mapper
+    )
   }
 }
 

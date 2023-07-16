@@ -7,9 +7,7 @@ import java.util.concurrent.Executor
 import java.util.concurrent.atomic.AtomicInteger
 
 interface RecentContactService {
-  fun migrateFromContact()
-
-  fun migrateFromContactOneRow()
+  fun migrateFromContact(maxId: Int)
 
   fun queryAndCount(): Int
 }
@@ -23,13 +21,13 @@ class RecentContactServiceImpl(
   val threadPoolTaskExecutor: Executor
 ) : RecentContactService, Log {
 
-  override fun migrateFromContact() {
+  override fun migrateFromContact(maxId: Int) {
     val chunkSize = 10000
     var chunk = ArrayList<Contact>(chunkSize)
     var i = 0
 
     contactJdbcRepo
-      .findAllByStream()
+      .findAllByStream(maxId)
       .forEach {
         if (i < chunkSize) {
           chunk.add(it)
@@ -48,18 +46,10 @@ class RecentContactServiceImpl(
     l.info("Done")
   }
 
-  override fun migrateFromContactOneRow() {
-    contactJdbcRepo
-      .findAllByStream()
-      .forEach {
-        convertAndSaveRecentContact(it)
-      }
-  }
-
   override fun queryAndCount(): Int {
     val counter = AtomicInteger()
 
-    contactJdbcRepo.findAllByStream().forEach { counter.addAndGet(1) }
+    contactJdbcRepo.findAllByStream(Int.MAX_VALUE).forEach { counter.addAndGet(1) }
 
     l.info("Size of contact table ${counter.get()}")
     return counter.get()
@@ -71,10 +61,6 @@ class RecentContactServiceImpl(
       recentContactJdbcRepo.saveAll(recentContacts)
       l.info { "Save ${recentContacts.size} RecentContacts successfully. Counter ${counter.addAndGet(recentContacts.size)}" }
     }
-  }
-
-  fun convertAndSaveRecentContact(contact: Contact) {
-    recentContactRepo.save(RecentContact(contactId = contact.id!!, profileId = contact.profileId))
   }
 
   val counter = AtomicInteger()

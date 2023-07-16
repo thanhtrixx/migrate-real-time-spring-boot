@@ -15,7 +15,7 @@ import javax.transaction.Transactional
 
 interface FakeDataService {
   fun fakeContacts(number: Int)
-  fun fakeReadTraffic(): Pair<Contact, RecentContact>
+  fun fakeReadTraffic(): Pair<Contact?, RecentContact?>
   fun fakeWriteTraffic(): Pair<Contact, RecentContact>
 }
 

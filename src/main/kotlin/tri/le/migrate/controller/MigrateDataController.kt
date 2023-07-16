@@ -1,6 +1,7 @@
 package tri.le.migrate.controller
 
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import tri.le.migrate.service.RecentContactService
@@ -11,14 +12,9 @@ class MigrateDataController(
   val recentContactService: RecentContactService
 ) {
 
-  @GetMapping("contact-to-recent-contact")
-  fun migrateContactToRecentContact() {
-    recentContactService.migrateFromContact()
-  }
-
-  @GetMapping("contact-to-recent-contact-one-row")
-  fun migrateContactToRecentContactOneRow() {
-    recentContactService.migrateFromContactOneRow()
+  @GetMapping("contact-to-recent-contact/{max-id}")
+  fun migrateContactToRecentContact(@PathVariable("max-id") maxId: Int) {
+    recentContactService.migrateFromContact(maxId)
   }
 
   @GetMapping("count-contact")

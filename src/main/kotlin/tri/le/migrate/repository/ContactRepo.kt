@@ -12,7 +12,7 @@ interface ContactRepo : CrudRepository<Contact, Long> {
   fun findAllBy(): Stream<Contact>
 
   @Query("SELECT * FROM contact WHERE id > (RAND() * 3000000) LIMIT 1", nativeQuery = true)
-  fun findRandom(): Contact
+  fun findRandom(): Contact?
 }
 
 
