@@ -38,7 +38,8 @@ class RecentContactServiceImpl(
         } else {
           convertAndSaveRecentContacts(chunk)
           chunk = ArrayList(chunkSize)
-          i = 0
+          chunk.add(it)
+          i = 1
         }
       }
 
