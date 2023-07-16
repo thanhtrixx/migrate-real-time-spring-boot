@@ -47,6 +47,13 @@ GET http://localhost:8080/migrate-data/contact-to-recent-contact
 ```
 
 ```sh
-java -Xmx1024m -Xms1024m -jar .\build\libs\migrate-real-time-spring-boot-0.0.1-SNAPSHOT.jar
+java -Xmx2048m -jar .\build\libs\migrate-real-time-spring-boot-0.0.1-SNAPSHOT.jar
 ```
 
+```sh
+./gradlew clean build bootRun
+```
+
+```sh
+k6 run k6/script.js
+```

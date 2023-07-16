@@ -11,7 +11,7 @@ import javax.persistence.IdClass
 
 interface RecentContactRepo : CrudRepository<RecentContact, Long> {
 
-  @Query("SELECT * FROM recent_contact ORDER BY RAND() LIMIT 1", nativeQuery = true)
+  @Query("SELECT * FROM recent_contact where contact_id > (RAND() * 3000000) LIMIT 1", nativeQuery = true)
   fun findRandom(): RecentContact
 }
 
