@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service
 import tri.le.migrate.repository.*
 import tri.le.migrate.util.Log
 import java.util.concurrent.Executor
-import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
 
 interface RecentContactService {

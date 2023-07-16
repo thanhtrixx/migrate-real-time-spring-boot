@@ -4,6 +4,8 @@ import io.github.serpro69.kfaker.Faker
 import org.springframework.stereotype.Service
 import tri.le.migrate.repository.Contact
 import tri.le.migrate.repository.ContactRepo
+import tri.le.migrate.repository.RecentContact
+import tri.le.migrate.repository.RecentContactRepo
 import tri.le.migrate.util.Log
 import java.util.*
 import java.util.concurrent.Executor
@@ -13,11 +15,14 @@ import javax.transaction.Transactional
 
 interface FakeDataService {
   fun fakeContacts(number: Int)
+  fun fakeReadTraffic(): Pair<Contact, RecentContact>
+  fun fakeWriteTraffic(): Pair<Contact, RecentContact>
 }
 
 @Service
-class FaceDataServiceImpl(
+class FakeDataServiceImpl(
   val contactRepo: ContactRepo,
+  val recentContactRepo: RecentContactRepo,
   val faker: Faker = Faker(),
   val threadPoolTaskExecutor: Executor
 ) : FakeDataService, Log {
@@ -36,6 +41,21 @@ class FaceDataServiceImpl(
       }
 
     l.info("Generate $number contacts successfully")
+  }
+
+  @Transactional
+  override fun fakeReadTraffic() = Pair(
+    contactRepo.findRandom(),
+    recentContactRepo.findRandom()
+  )
+
+  @Transactional
+  override fun fakeWriteTraffic(): Pair<Contact, RecentContact> {
+    val contact =
+      contactRepo.save(Contact(name = faker.name.nameWithMiddle(), profileId = UUID.randomUUID().toString()))
+    val recentContact = recentContactRepo.save(RecentContact(profileId = contact.profileId, contactId = contact.id!!))
+
+    return Pair(contact, recentContact)
   }
 
   @Transactional

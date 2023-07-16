@@ -1,5 +1,6 @@
 package tri.le.migrate.repository
 
+import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import java.io.Serializable
 import java.time.LocalDateTime
@@ -9,6 +10,9 @@ import javax.persistence.Id
 import javax.persistence.IdClass
 
 interface RecentContactRepo : CrudRepository<RecentContact, Long> {
+
+  @Query("SELECT * FROM recent_contact ORDER BY RAND() LIMIT 1", nativeQuery = true)
+  fun findRandom(): RecentContact
 }
 
 @Entity

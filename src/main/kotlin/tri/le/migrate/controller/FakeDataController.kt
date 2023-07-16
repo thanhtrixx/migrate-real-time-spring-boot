@@ -16,4 +16,10 @@ class FakeDataController(
   fun fakeContact(@PathVariable number: Int) {
     fakeDataService.fakeContacts(number)
   }
+
+  @GetMapping("read-traffic")
+  fun fakeReadTraffic() = fakeDataService.fakeReadTraffic()
+
+  @GetMapping("write-traffic")
+  fun fakeWriteTraffic() = fakeDataService.fakeWriteTraffic()
 }
