@@ -1,59 +1,31 @@
-# migrate-real-time-spring-boot
+# Realtime Data Migration DataBase
 
-The PoC project to migrate real time data
+This repository contains a solution for migrating realtime data from the `contact` table to the `recent_contact` table while minimizing the chances of deadlock occurrences. The purpose of this migration is to ensure that the `recent_contact` table always contains the most up-to-date and relevant contact information.
 
-## Start MySql 5.7
+## Table of Contents
+- [Introduction](#introduction)
+- [Getting Started](#getting-started)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Contributing](#contributing)
+- [License](#license)
 
-```sh
-docker run --name mysql-5.7 -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -d mysql:5.7-debian
-```
+## Introduction
+
+In my current project, there is a need to migrate data from the `contact` table to the `recent_contact` table. Initially, we attempted to use the SQL statement.
 
 ```sql
-CREATE TABLE contact
-(
-  id            bigint AUTO_INCREMENT PRIMARY KEY,
-  profile_id    varchar(64)                               NOT NULL,
-  name          varchar(256)                              NOT NULL,
-  is_favourite  tinyint      DEFAULT 0                    NOT NULL,
-  version       int          DEFAULT 0                    NOT NULL,
-  modified_date timestamp(3) DEFAULT CURRENT_TIMESTAMP(3) NULL,
-  created_date  timestamp(3) DEFAULT CURRENT_TIMESTAMP(3) NULL
-);
-
-CREATE TABLE recent_contact
-(
-  profile_id    varchar(100)                              NOT NULL,
-  contact_id    bigint                                    NOT NULL,
-  created_date  timestamp(3) DEFAULT CURRENT_TIMESTAMP(3) NULL,
-  modified_date timestamp(3) DEFAULT CURRENT_TIMESTAMP(3) NULL,
-  PRIMARY KEY (profile_id,
-               contact_id)
-);
-
-
-CREATE TABLE favorite_contact
-(
-  profile_id    varchar(100)                              NOT NULL,
-  contact_id    bigint                                    NOT NULL,
-  created_date  timestamp(3) DEFAULT CURRENT_TIMESTAMP(3) NULL,
-  modified_date timestamp(3) DEFAULT CURRENT_TIMESTAMP(3) NULL,
-  PRIMARY KEY (profile_id,
-               contact_id)
-);
+INSERT INTO recent_contact (profile_id, contact_id)
+SELECT profile_id, id FROM contact;
 ```
 
-```http
-GET http://localhost:8080/migrate-data/contact-to-recent-contact
-```
+However, this resulted in deadlocks that adversely affected system operations. To overcome this challenge, I have developed a solution to eliminate deadlocks during the database migration process.
 
-```sh
-java -Xmx2048m -jar .\build\libs\migrate-real-time-spring-boot-0.0.1-SNAPSHOT.jar
-```
+This repository offers an improved approach for successfully migrating data from the contact table to the recent_contact table without encountering deadlocks. By implementing effective concurrency control techniques, optimizing read and write operations, and utilizing appropriate transaction isolation levels, we ensure a smooth and reliable migration process.
 
-```sh
-./gradlew clean build bootRun
-```
+The solution provided here serves as a comprehensive guide, providing detailed instructions to set up prerequisites, install the migration script, and configure the migration settings specific to your environment. By following these guidelines, you can migrate data seamlessly and prevent any disruptions caused by deadlocks.
 
-```sh
-k6 run k6/script.js
-```
+Next, we will provide detailed information on getting started with the migration process. If you have any questions or need assistance, please don't hesitate to ask.
+
